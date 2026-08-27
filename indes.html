@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nattasha · Consultoria RH</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Google Fonts (Outfit) -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+        /* ===== RESET & VARIÁVEIS (Light = padrão) ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2d1b69;
+            --primary-light: #4a2d8a;
+            --accent: #f9a825;
+            --accent-hover: #f57f17;
+            --bg: #f5f3ff;
+            --bg-card: #ffffff;
+            --bg-form: #ffffff;
+            --bg-header: rgba(255, 255, 255, 0.85);
+            --text-primary: #2d1b69;
+            --text-gray: #6b5f7a;
+            --border-light: #ede9f7;
+            --shadow: 0 8px 32px rgba(45, 27, 105, 0.10);
+            --radius: 20px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: 'Outfit', sans-serif;
+            --hero-gradient: linear-gradient(135deg, #2d1b69 0%, #4a2d8a 100%);
+            --footer-bg: #2d1b69;
+            --footer-text: #d4cce6;
+            --input-bg: #faf8ff;
+            --modal-overlay: rgba(45, 27, 105, 0.7);
+        }
+
+        /* ===== TEMA ESCURO ===== */
+        [data-theme="dark"] {
+            --primary: #f9a825;
+            --primary-light: #f57f17;
+            --accent: #f9a825;
+            --accent-hover: #fbc02d;
+            --bg: #121212;
+            --bg-card: #1e1e2a;
+            --bg-form: #1e1e2a;
+            --bg-header: rgba(18, 18, 30, 0.92);
+            --text-primary: #f0eceb;
+            --text-gray: #b0aac0;
+            --border-light: #3a3a4a;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --hero-gradient: linear-gradient(135deg, #1a1040 0%, #2d1b69 100%);
+            --footer-bg: #0e0a1e;
+            --footer-text: #b0aac0;
+            --input-bg: #2a2a3a;
+            --modal-overlay: rgba(0, 0, 0, 0.8);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            opacity: 0;
+            animation: fadeInBody 0.6s ease forwards;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        @keyframes fadeInBody {
+            to {
+                opacity: 1;
+            }
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== UTILITY ===== */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-size: 2.6rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        .section-title span {
+            color: var(--accent);
+        }
+        .section-subtitle {
+            text-align: center;
+            max-width: 660px;
+            margin: 0 auto 48px;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background: var(--bg-header);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.3s ease;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-primary);
+        }
+        .logo i {
+            color: var(--accent);
+            font-size: 2rem;
+        }
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 28px;
+            font-weight: 500;
+            align-items: center;
+        }
+        .nav-menu a {
+            padding: 6px 0;
+            position: relative;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            width: 0;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+        .nav-menu a:hover::after,
+        .nav-menu a.active::after {
+            width: 100%;
+        }
+        .nav-menu a.active {
+            color: var(--accent);
+        }
+
+        /* Botões no header */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-admin {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(45, 27, 105, 0.2);
+        }
+        .btn-admin:hover {
+            background: var(--accent);
+            color: var(--primary);
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(249, 168, 37, 0.3);
+        }
+        .btn-admin i {
+            font-size: 1rem;
+        }
+
+        .btn-theme-toggle {
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: var(--transition);
+            padding: 4px 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+        }
+        .btn-theme-toggle:hover {
+            background: rgba(249, 168, 37, 0.15);
+            transform: rotate(20deg);
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: transform 0.3s ease;
+        }
+        .menu-toggle:hover {
+            transform: rotate(90deg);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: var(--hero-gradient);
+            color: #fff;
+            padding: 90px 0 80px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -20%;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(249, 168, 37, 0.10) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: floatGlow 20s infinite alternate ease-in-out;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -15%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(249, 168, 37, 0.07) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: floatGlow 25s infinite alternate-reverse ease-in-out;
+        }
+        @keyframes floatGlow {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                transform: translate(40px, -30px) scale(1.15);
+            }
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .hero .foto {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 5px solid var(--accent);
+            box-shadow: 0 0 0 10px rgba(249, 168, 37, 0.15), 0 20px 50px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            transition: var(--transition);
+            animation: fadeUp 0.8s ease both;
+        }
+        .hero .foto:hover {
+            transform: scale(1.05);
+            border-color: #fff;
+        }
+        .hero .foto img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero .texto {
+            animation: fadeUp 0.8s ease both 0.1s;
+        }
+        .hero .texto h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+        .hero .texto h1 span {
+            color: var(--accent);
+        }
+        .hero .texto p {
+            font-size: 1.15rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 28px;
+            font-weight: 300;
+        }
+        .hero .texto .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--accent);
+            color: var(--primary);
+            padding: 8px 28px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+            transition: var(--transition);
+            cursor: default;
+        }
+        .hero .texto .badge:hover {
+            transform: scale(1.06);
+            box-shadow: 0 6px 24px rgba(249, 168, 37, 0.4);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== SEÇÕES ===== */
+        .secao {
+            padding: 70px 0 80px;
+            transition: background 0.3s ease;
+        }
+
+        /* ===== VAGAS ===== */
+        .vagas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .vaga-card {
+            background: var(--bg-card);
+            padding: 28px 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border-left: 6px solid var(--accent);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            animation: fadeUp 0.6s ease both;
+            animation-delay: calc(0.06s * var(--i, 1));
+        }
+        .vaga-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+            border-left-width: 8px;
+        }
+
+        .vaga-card .vaga-info h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        .vaga-card .vaga-info p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            margin: 2px 0;
+        }
+        .vaga-card .vaga-info .local {
+            display: inline-block;
+            background: var(--border-light);
+            padding: 2px 16px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 8px;
+            color: var(--text-primary);
+        }
+        .vaga-card .vaga-info .requisitos {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-top: 6px;
+        }
+        .vaga-card .vaga-info .requisitos i {
+            color: var(--accent);
+            margin-right: 4px;
+        }
+
+        .vaga-card .btn-candidatar {
+            align-self: flex-start;
+            margin-top: 18px;
+            background: var(--primary);
+            color: #fff;
+            padding: 10px 28px;
+            border-radius: 60px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            font-size: 0.95rem;
+        }
+        .vaga-card .btn-candidatar:hover {
+            background: var(--accent);
+            color: var(--primary);
+            transform: scale(1.04);
+            box-shadow: 0 8px 24px rgba(249, 168, 37, 0.3);
+        }
+
+        /* ===== EMPRESAS ===== */
+        .empresa-form {
+            background: var(--bg-form);
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 48px 40px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .empresa-form:hover {
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
+        }
+
+        .empresa-form .form-group {
+            margin-bottom: 22px;
+            position: relative;
+        }
+        .empresa-form .form-group i {
+            position: absolute;
+            left: 16px;
+            top: 42px;
+            color: var(--accent);
+            font-size: 1.1rem;
+        }
+        .empresa-form label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+        .empresa-form input,
+        .empresa-form textarea,
+        .empresa-form select {
+            width: 100%;
+            padding: 12px 16px 12px 46px;
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: var(--font);
+            transition: var(--transition);
+            background: var(--input-bg);
+            color: var(--text-primary);
+        }
+        .empresa-form textarea {
+            padding-left: 16px;
+            min-height: 110px;
+            resize: vertical;
+        }
+        .empresa-form input:focus,
+        .empresa-form textarea:focus,
+        .empresa-form select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(249, 168, 37, 0.12);
+            background: var(--bg-form);
+        }
+
+        .empresa-form .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+        .empresa-form .btn-submit:hover {
+            background: var(--accent);
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(249, 168, 37, 0.3);
+        }
+
+        /* ===== TREINAMENTOS ===== */
+        .treinamento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            max-width: 1050px;
+            margin: 0 auto 48px;
+        }
+
+        .treinamento-card {
+            background: var(--bg-card);
+            padding: 36px 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid transparent;
+            animation: fadeUp 0.6s ease both;
+            animation-delay: calc(0.08s * var(--i, 1));
+        }
+        .treinamento-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.1);
+        }
+
+        .treinamento-card i {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 18px;
+            display: inline-block;
+            transition: var(--transition);
+        }
+        .treinamento-card:hover i {
+            transform: scale(1.2) rotate(4deg);
+            color: var(--primary);
+        }
+        .treinamento-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        .treinamento-card p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+
+        .treinamento-cta {
+            text-align: center;
+            animation: fadeUp 0.6s ease 0.2s both;
+        }
+
+        .btn-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            background: linear-gradient(135deg, #f9a825, #f57f17);
+            color: #fff;
+            padding: 18px 48px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.15rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            box-shadow: 0 6px 24px rgba(249, 168, 37, 0.35);
+            animation: pulseGold 2.5s infinite ease-in-out;
+        }
+        @keyframes pulseGold {
+            0% {
+                box-shadow: 0 6px 24px rgba(249, 168, 37, 0.35);
+            }
+            50% {
+                box-shadow: 0 6px 48px rgba(249, 168, 37, 0.6);
+            }
+            100% {
+                box-shadow: 0 6px 24px rgba(249, 168, 37, 0.35);
+            }
+        }
+        .btn-whatsapp i {
+            font-size: 1.8rem;
+            transition: transform 0.3s ease;
+        }
+        .btn-whatsapp:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 12px 40px rgba(249, 168, 37, 0.5);
+        }
+        .btn-whatsapp:hover i {
+            transform: rotate(-12deg) scale(1.1);
+        }
+
+        /* ===== MODAL ADMIN ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-overlay);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeInModal 0.3s ease;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        @keyframes fadeInModal {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal {
+            background: var(--bg-card);
+            max-width: 580px;
+            width: 94%;
+            padding: 40px 36px;
+            border-radius: var(--radius);
+            position: relative;
+            animation: modalSlide 0.35s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
+            color: var(--text-primary);
+        }
+        @keyframes modalSlide {
+            from {
+                transform: translateY(40px) scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 22px;
+            font-size: 2.2rem;
+            cursor: pointer;
+            color: var(--text-gray);
+            transition: var(--transition);
+            line-height: 1;
+        }
+        .modal-close:hover {
+            color: var(--text-primary);
+            transform: rotate(90deg);
+        }
+
+        .modal h2 {
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        .modal p {
+            color: var(--text-gray);
+            margin-bottom: 24px;
+        }
+
+        .modal .form-group {
+            margin-bottom: 20px;
+        }
+        .modal .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+        .modal .form-group input,
+        .modal .form-group textarea,
+        .modal .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: var(--font);
+            transition: var(--transition);
+            background: var(--input-bg);
+            color: var(--text-primary);
+        }
+        .modal .form-group input:focus,
+        .modal .form-group textarea:focus,
+        .modal .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(249, 168, 37, 0.12);
+            background: var(--bg-form);
+        }
+        .modal .form-group textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+        .modal .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            margin-top: 4px;
+        }
+        .modal .btn-submit:hover {
+            background: var(--accent);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Admin panel inside modal */
+        .admin-panel .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+        }
+        .admin-panel .admin-header h3 {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+        }
+        .admin-panel .btn-logout {
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            padding: 8px 24px;
+            border-radius: 60px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+        .admin-panel .btn-logout:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+
+        .admin-panel .vaga-admin-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border-light);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .admin-panel .vaga-admin-item button {
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            padding: 4px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: var(--font);
+            transition: var(--transition);
+        }
+        .admin-panel .vaga-admin-item button:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+        .admin-panel hr {
+            margin: 32px 0;
+            border: none;
+            border-top: 2px solid var(--border-light);
+        }
+
+        /* ===== MODAL CANDIDATURA ===== */
+        .modal-candidatura .form-group input[type="file"] {
+            padding: 8px 0;
+            border: none;
+            background: transparent;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--footer-bg);
+            color: var(--footer-text);
+            padding: 40px 0 20px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        footer .container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+            align-items: center;
+        }
+        footer .logo {
+            color: #fff;
+            font-size: 1.5rem;
+        }
+        footer .logo i {
+            color: var(--accent);
+        }
+        footer .copy {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: 12px;
+            width: 100%;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* ===== RESPONSIVIDADE ===== */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                gap: 12px;
+                padding: 18px 0 8px;
+                background: var(--bg-header);
+                backdrop-filter: blur(8px);
+                border-radius: 12px;
+                margin-top: 8px;
+            }
+            .nav-menu.open {
+                display: flex;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .header-actions {
+                gap: 8px;
+            }
+            .btn-admin {
+                padding: 6px 14px;
+                font-size: 0.8rem;
+            }
+            .btn-theme-toggle {
+                font-size: 1.2rem;
+                width: 36px;
+                height: 36px;
+            }
+            .hero .texto h1 {
+                font-size: 2.4rem;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            .vagas-grid {
+                grid-template-columns: 1fr;
+            }
+            .empresa-form {
+                padding: 32px 20px;
+            }
+            footer .container {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .btn-whatsapp {
+                padding: 14px 28px;
+                font-size: 1rem;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal {
+                padding: 28px 18px;
+            }
+            .hero .texto h1 {
+                font-size: 1.8rem;
+            }
+            .hero .foto {
+                width: 140px;
+                height: 140px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-handshake"></i> Nattasha<span>RH</span>
+            </div>
+            <div class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a class="active" href="#vagas">Vagas</a></li>
+                    <li><a href="#empresas">Empresas</a></li>
+                    <li><a href="#treinamentos">Treinamentos</a></li>
+                    <!-- Admin mobile (visível apenas quando menu aberto) -->
+                    <li style="display:none;" id="adminMobileLi">
+                        <button class="btn-admin" id="btnAdminMobile">
+                            <i class="fas fa-lock"></i> Admin
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button class="btn-theme-toggle" id="themeToggle" aria-label="Alternar tema">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="btn-admin" id="btnAdminDesktop">
+                    <i class="fas fa-lock"></i> Admin
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="inicio">
+        <div class="container">
+            <div class="foto">
+                <img src="https://via.placeholder.com/300x300/2d1b69/f9a825?text=Nattasha" alt="Nattasha" />
+            </div>
+            <div class="texto">
+                <h1>Nattasha <span>Consultoria RH</span></h1>
+                <p>
+                    Especialista em conectar talentos às melhores empresas.
+                    Com mais de 10 anos de experiência, ajudo organizações a
+                    construir times de alta performance e profissionais a
+                    encontrarem oportunidades alinhadas aos seus propósitos.
+                </p>
+                <span class="badge"><i class="fas fa-check-circle"></i> Confiança e resultados</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== VAGAS ===== -->
+    <section class="secao" id="vagas">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">Vagas <span>abertas</span></h2>
+            <p class="section-subtitle animate-on-scroll">
+                Confira as oportunidades disponíveis e candidate-se enviando seu currículo.
+            </p>
+            <div class="vagas-grid" id="vagasContainer">
+                <!-- Inserido via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== EMPRESAS ===== -->
+    <section class="secao" id="empresas" style="background: var(--bg);">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">Sua empresa <span>precisa de talentos?</span></h2>
+            <p class="section-subtitle animate-on-scroll">
+                Preencha o formulário abaixo e entraremos em contato para oferecer as melhores soluções em recrutamento e seleção.
+            </p>
+            <div class="empresa-form animate-on-scroll">
+                <form action="https://formsubmit.co/5140926c857b0471afbd71d485cf6545" method="POST">
+                    <input type="hidden" name="_captcha" value="false" />
+                    <input type="hidden" name="_subject" value="Contato de empresa - Nattasha RH" />
+
+                    <div class="form-group">
+                        <label for="empNome">Nome da empresa</label>
+                        <i class="fas fa-building"></i>
+                        <input type="text" id="empNome" name="empresa" placeholder="Nome da sua empresa" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="empContato">Seu nome</label>
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="empContato" name="contato" placeholder="Seu nome" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="empEmail">E-mail</label>
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="empEmail" name="email" placeholder="seu@email.com" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="empTelefone">Telefone</label>
+                        <i class="fas fa-phone"></i>
+                        <input type="tel" id="empTelefone" name="telefone" placeholder="(00) 00000-0000" />
+                    </div>
+                    <div class="form-group">
+                        <label for="empMensagem">Descreva sua necessidade</label>
+                        <textarea id="empMensagem" name="mensagem" placeholder="Quantas vagas? Perfil desejado? Prazo?" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">Enviar mensagem</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TREINAMENTOS ===== -->
+    <section class="secao" id="treinamentos">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">Treinamentos <span>para líderes e equipes</span></h2>
+            <p class="section-subtitle animate-on-scroll">
+                Capacite sua equipe com nossos programas desenvolvidos para potencializar resultados e fortalecer a cultura organizacional.
+            </p>
+            <div class="treinamento-grid">
+                <div class="treinamento-card animate-on-scroll" style="--i:1;">
+                    <i class="fas fa-users"></i>
+                    <h3>Liderança Inspiradora</h3>
+                    <p>Desenvolva habilidades de liderança, comunicação e gestão de equipes para inspirar e engajar seus colaboradores.</p>
+                </div>
+                <div class="treinamento-card animate-on-scroll" style="--i:2;">
+                    <i class="fas fa-comments"></i>
+                    <h3>Comunicação Não-Violenta</h3>
+                    <p>Aprenda a resolver conflitos, dar feedbacks construtivos e criar um ambiente de trabalho mais saudável e produtivo.</p>
+                </div>
+                <div class="treinamento-card animate-on-scroll" style="--i:3;">
+                    <i class="fas fa-brain"></i>
+                    <h3>Inteligência Emocional</h3>
+                    <p>Capacite sua equipe a gerenciar emoções, aumentar a resiliência e melhorar o relacionamento interpessoal.</p>
+                </div>
+                <div class="treinamento-card animate-on-scroll" style="--i:4;">
+                    <i class="fas fa-chart-pie"></i>
+                    <h3>Gestão de Desempenho</h3>
+                    <p>Implemente métricas, avaliações e planos de desenvolvimento para alavancar a performance individual e coletiva.</p>
+                </div>
+                <div class="treinamento-card animate-on-scroll" style="--i:5;">
+                    <i class="fas fa-handshake"></i>
+                    <h3>Team Building</h3>
+                    <p>Atividades práticas para fortalecer a coesão, a confiança e a colaboração entre os membros da equipe.</p>
+                </div>
+                <div class="treinamento-card animate-on-scroll" style="--i:6;">
+                    <i class="fas fa-rocket"></i>
+                    <h3>Inovação e Criatividade</h3>
+                    <p>Estimule o pensamento criativo e a inovação para resolver problemas e gerar novas oportunidades de negócio.</p>
+                </div>
+            </div>
+
+            <div class="treinamento-cta animate-on-scroll">
+                <a href="https://wa.me/5521981478571?text=gostaria%20de%20saber%20mais%20sobre%20o%20treinamento" target="_blank" class="btn-whatsapp">
+                    <i class="fas fa-bell"></i> Solicitar treinamento
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== MODAL ADMIN ===== -->
+    <div class="modal-overlay" id="modalAdmin">
+        <div class="modal">
+            <span class="modal-close" id="modalAdminClose">&times;</span>
+
+            <div id="adminModalContent">
+                <!-- Login -->
+                <div id="adminLoginModal">
+                    <h2>Painel Administrativo</h2>
+                    <p>Faça login para gerenciar as vagas.</p>
+                    <form id="loginFormModal">
+                        <div class="form-group">
+                            <label for="loginUserModal">Usuário</label>
+                            <input type="text" id="loginUserModal" placeholder="Usuário" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassModal">Senha</label>
+                            <input type="password" id="loginPassModal" placeholder="Senha" required />
+                        </div>
+                        <button type="submit" class="btn-submit">Entrar</button>
+                        <p id="loginErrorModal" style="color:#e74c3c;margin-top:16px;display:none;">Usuário ou senha incorretos.</p>
+                    </form>
+                </div>
+
+                <!-- Painel -->
+                <div id="adminPanelModal" style="display:none;">
+                    <div class="admin-panel" style="padding:0;box-shadow:none;">
+                        <div class="admin-header">
+                            <h3>Gerenciar Vagas</h3>
+                            <button class="btn-logout" id="btnLogoutModal">Sair</button>
+                        </div>
+
+                        <form id="formNovaVagaModal">
+                            <div class="form-group">
+                                <label for="novaVagaTituloModal">Título da vaga *</label>
+                                <input type="text" id="novaVagaTituloModal" placeholder="Ex: Desenvolvedor(a) Full Stack" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="novaVagaEmpresaModal">Empresa *</label>
+                                <input type="text" id="novaVagaEmpresaModal" placeholder="Nome da empresa" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="novaVagaLocalModal">Local *</label>
+                                <input type="text" id="novaVagaLocalModal" placeholder="Ex: São Paulo - SP (Híbrido)" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="novaVagaSalarioModal">Salário (opcional)</label>
+                                <input type="text" id="novaVagaSalarioModal" placeholder="Ex: R$ 5.000 - 7.000" />
+                            </div>
+                            <div class="form-group">
+                                <label for="novaVagaRequisitosModal">Requisitos (opcional)</label>
+                                <textarea id="novaVagaRequisitosModal" placeholder="Descreva os requisitos principais"></textarea>
+                            </div>
+                            <button type="submit" class="btn-submit">Adicionar vaga</button>
+                        </form>
+
+                        <hr />
+
+                        <h3 style="margin-bottom:16px;">Vagas atuais</h3>
+                        <div id="adminVagasListModal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL CANDIDATURA ===== -->
+    <div class="modal-overlay modal-candidatura" id="modalCandidatura">
+        <div class="modal">
+            <span class="modal-close" id="modalClose">&times;</span>
+            <h2>Candidatar-se à vaga</h2>
+            <p id="modalVagaNome">Vaga: <strong>Carregando...</strong></p>
+
+            <form action="https://formsubmit.co/5140926c857b0471afbd71d485cf6545" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="_captcha" value="false" />
+                <input type="hidden" name="_subject" value="Nova candidatura - Nattasha RH" />
+                <input type="hidden" name="vaga" id="hiddenVaga" />
+
+                <div class="form-group">
+                    <label for="candNome">Nome completo *</label>
+                    <input type="text" id="candNome" name="nome" placeholder="Seu nome" required />
+                </div>
+                <div class="form-group">
+                    <label for="candEmail">E-mail *</label>
+                    <input type="email" id="candEmail" name="email" placeholder="seu@email.com" required />
+                </div>
+                <div class="form-group">
+                    <label for="candTelefone">Telefone</label>
+                    <input type="tel" id="candTelefone" name="telefone" placeholder="(00) 00000-0000" />
+                </div>
+                <div class="form-group">
+                    <label for="candCurriculo">Anexar currículo (PDF, DOC) *</label>
+                    <input type="file" id="candCurriculo" name="curriculo" accept=".pdf,.doc,.docx" required />
+                </div>
+                <div class="form-group">
+                    <label for="candMensagem">Mensagem (opcional)</label>
+                    <textarea id="candMensagem" name="mensagem" placeholder="Escreva algo sobre você..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Enviar candidatura</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-handshake"></i> Nattasha<span>RH</span>
+            </div>
+            <div class="copy">
+                &copy; 2026 Nattasha RH. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ========== DARK MODE ==========
+            const themeToggle = document.getElementById('themeToggle');
+            const icon = themeToggle.querySelector('i');
+
+            // Carregar preferência salva
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+
+            themeToggle.addEventListener('click', function() {
+                const current = document.documentElement.getAttribute('data-theme');
+                if (current === 'dark') {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('theme', 'light');
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                }
+            });
+
+            // ========== DADOS ==========
+            const STORAGE_KEY = 'nattasha_vagas';
+
+            const vagasPadrao = [
+                { id: 1, titulo: 'Desenvolvedor(a) Full Stack', empresa: 'TechCorp S/A', local: 'São Paulo - SP (Híbrido)',
+                    salario: 'R$ 8.000 - 10.000', requisitos: 'React, Node.js, banco de dados' },
+                { id: 2, titulo: 'Analista de Marketing Digital', empresa: 'Agência Nova', local: 'Remoto',
+                    salario: 'R$ 4.500 - 6.000', requisitos: 'SEO, Google Ads, redes sociais' },
+                { id: 3, titulo: 'Gerente de Projetos (PMO)', empresa: 'Construtora Delta', local: 'Belo Horizonte - MG',
+                    salario: 'R$ 12.000', requisitos: 'PMP, gestão de equipes, planejamento' },
+                { id: 4, titulo: 'Assistente de Recursos Humanos', empresa: 'Nattasha RH', local: 'Curitiba - PR',
+                    salario: 'R$ 3.000 - 4.000', requisitos: 'Rotinas de RH, atendimento, organização' },
+                { id: 5, titulo: 'Engenheiro(a) de Dados', empresa: 'DataFlow Analytics', local: 'Rio de Janeiro - RJ (Remoto)',
+                    salario: 'R$ 9.000 - 12.000', requisitos: 'Python, SQL, Spark, cloud (AWS/GCP)' },
+                { id: 6, titulo: 'Designer UX/UI Sênior', empresa: 'Criativa Agência', local: 'Florianópolis - SC (Presencial)',
+                    salario: 'R$ 7.000 - 9.000', requisitos: 'Figma, Adobe XD, pesquisa de usuário, prototipagem' },
+                { id: 7, titulo: 'Coordenador(a) de Vendas', empresa: 'Nova Fase Comercial', local: 'Brasília - DF',
+                    salario: 'R$ 10.000 + comissão', requisitos: 'Liderança de equipe, CRM, planejamento estratégico' }
+            ];
+
+            let vagas = carregarVagas();
+
+            function carregarVagas() {
+                const dados = localStorage.getItem(STORAGE_KEY);
+                if (dados) {
+                    try { return JSON.parse(dados); } catch (e) { return [...vagasPadrao]; }
+                }
+                salvarVagas(vagasPadrao);
+                return [...vagasPadrao];
+            }
+
+            function salvarVagas(lista) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
+            }
+
+            // ========== RENDERIZAR VAGAS ==========
+            function renderizarVagas() {
+                const container = document.getElementById('vagasContainer');
+                if (!container) return;
+
+                if (vagas.length === 0) {
+                    container.innerHTML = `
+                        <div style="grid-column:1/-1;text-align:center;padding:60px 20px;background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow);">
+                            <p style="font-size:1.1rem;color:var(--text-gray);">Nenhuma vaga disponível no momento.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '';
+                vagas.forEach((v, idx) => {
+                    html += `
+                        <div class="vaga-card" data-id="${v.id}" style="--i:${idx+1};">
+                            <div class="vaga-info">
+                                <h3>${v.titulo}</h3>
+                                <p><i class="fas fa-building" style="color:var(--accent);width:18px;"></i> ${v.empresa}</p>
+                                ${v.salario ? `<p><i class="fas fa-money-bill-wave" style="color:var(--accent);width:18px;"></i> ${v.salario}</p>` : ''}
+                                <span class="local"><i class="fas fa-map-pin"></i> ${v.local}</span>
+                                ${v.requisitos ? `<div class="requisitos"><i class="fas fa-check-circle"></i> ${v.requisitos}</div>` : ''}
+                            </div>
+                            <button class="btn-candidatar" data-vaga-id="${v.id}">Candidatar-se</button>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+
+                document.querySelectorAll('.btn-candidatar').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = parseInt(this.getAttribute('data-vaga-id'));
+                        const vaga = vagas.find(v => v.id === id);
+                        if (vaga) abrirModalCandidatura(vaga);
+                    });
+                });
+            }
+
+            // ========== ADMIN ==========
+            function renderizarAdminVagasModal() {
+                const lista = document.getElementById('adminVagasListModal');
+                if (!lista) return;
+
+                if (vagas.length === 0) {
+                    lista.innerHTML = '<p style="color:var(--text-gray);">Nenhuma vaga cadastrada.</p>';
+                    return;
+                }
+
+                let html = '';
+                vagas.forEach(v => {
+                    html += `
+                        <div class="vaga-admin-item">
+                            <span><strong>${v.titulo}</strong> - ${v.empresa} ${v.salario ? '| '+v.salario : ''}</span>
+                            <button data-id="${v.id}">Remover</button>
+                        </div>
+                    `;
+                });
+                lista.innerHTML = html;
+
+                lista.querySelectorAll('button').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = parseInt(this.getAttribute('data-id'));
+                        removerVaga(id);
+                    });
+                });
+            }
+
+            function adicionarVaga(titulo, empresa, local, salario, requisitos) {
+                const novoId = vagas.length > 0 ? Math.max(...vagas.map(v => v.id)) + 1 : 1;
+                vagas.push({ id: novoId, titulo, empresa, local, salario, requisitos });
+                salvarVagas(vagas);
+                renderizarVagas();
+                renderizarAdminVagasModal();
+            }
+
+            function removerVaga(id) {
+                vagas = vagas.filter(v => v.id !== id);
+                salvarVagas(vagas);
+                renderizarVagas();
+                renderizarAdminVagasModal();
+            }
+
+            // ========== MODAL ADMIN ==========
+            const modalAdmin = document.getElementById('modalAdmin');
+            const modalAdminClose = document.getElementById('modalAdminClose');
+            const adminLoginDiv = document.getElementById('adminLoginModal');
+            const adminPanelDiv = document.getElementById('adminPanelModal');
+            const loginFormModal = document.getElementById('loginFormModal');
+            const loginErrorModal = document.getElementById('loginErrorModal');
+
+            function abrirModalAdmin() {
+                if (sessionStorage.getItem('admin_logged') === 'true') {
+                    adminLoginDiv.style.display = 'none';
+                    adminPanelDiv.style.display = 'block';
+                    renderizarAdminVagasModal();
+                } else {
+                    adminLoginDiv.style.display = 'block';
+                    adminPanelDiv.style.display = 'none';
+                    loginErrorModal.style.display = 'none';
+                    loginFormModal.reset();
+                }
+                modalAdmin.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function fecharModalAdmin() {
+                modalAdmin.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                if (sessionStorage.getItem('admin_logged') !== 'true') {
+                    loginFormModal.reset();
+                    loginErrorModal.style.display = 'none';
+                }
+            }
+
+            document.getElementById('btnAdminDesktop').addEventListener('click', abrirModalAdmin);
+            document.getElementById('btnAdminMobile').addEventListener('click', abrirModalAdmin);
+
+            modalAdminClose.addEventListener('click', fecharModalAdmin);
+            modalAdmin.addEventListener('click', function(e) {
+                if (e.target === this) fecharModalAdmin();
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modalAdmin.classList.contains('active')) fecharModalAdmin();
+            });
+
+            loginFormModal.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const user = document.getElementById('loginUserModal').value.trim();
+                const pass = document.getElementById('loginPassModal').value.trim();
+
+                if (user === 'natt' && pass === '7483') {
+                    sessionStorage.setItem('admin_logged', 'true');
+                    adminLoginDiv.style.display = 'none';
+                    adminPanelDiv.style.display = 'block';
+                    renderizarAdminVagasModal();
+                    loginErrorModal.style.display = 'none';
+                    loginFormModal.reset();
+                } else {
+                    loginErrorModal.style.display = 'block';
+                }
+            });
+
+            document.getElementById('btnLogoutModal').addEventListener('click', function() {
+                sessionStorage.removeItem('admin_logged');
+                adminLoginDiv.style.display = 'block';
+                adminPanelDiv.style.display = 'none';
+                loginErrorModal.style.display = 'none';
+                loginFormModal.reset();
+                fecharModalAdmin();
+                renderizarVagas();
+            });
+
+            // ========== FORM NOVA VAGA ==========
+            document.getElementById('formNovaVagaModal').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const titulo = document.getElementById('novaVagaTituloModal').value.trim();
+                const empresa = document.getElementById('novaVagaEmpresaModal').value.trim();
+                const local = document.getElementById('novaVagaLocalModal').value.trim();
+                const salario = document.getElementById('novaVagaSalarioModal').value.trim();
+                const requisitos = document.getElementById('novaVagaRequisitosModal').value.trim();
+
+                if (!titulo || !empresa || !local) {
+                    alert('Preencha título, empresa e local (obrigatórios).');
+                    return;
+                }
+
+                adicionarVaga(titulo, empresa, local, salario, requisitos);
+                this.reset();
+                alert('Vaga adicionada com sucesso!');
+                renderizarAdminVagasModal();
+            });
+
+            // ========== MODAL CANDIDATURA ==========
+            const modalCand = document.getElementById('modalCandidatura');
+            const modalCandClose = document.getElementById('modalClose');
+            const modalVagaNome = document.getElementById('modalVagaNome');
+            const hiddenVaga = document.getElementById('hiddenVaga');
+
+            function abrirModalCandidatura(vaga) {
+                modalVagaNome.innerHTML = `Vaga: <strong>${vaga.titulo}</strong>`;
+                hiddenVaga.value = vaga.titulo;
+                modalCand.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function fecharModalCandidatura() {
+                modalCand.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                document.querySelector('#modalCandidatura form').reset();
+            }
+
+            modalCandClose.addEventListener('click', fecharModalCandidatura);
+            modalCand.addEventListener('click', function(e) {
+                if (e.target === this) fecharModalCandidatura();
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modalCand.classList.contains('active')) fecharModalCandidatura();
+            });
+
+            document.querySelector('#modalCandidatura form').addEventListener('submit', function(e) {
+                const nome = document.getElementById('candNome').value.trim();
+                const email = document.getElementById('candEmail').value.trim();
+                const curriculo = document.getElementById('candCurriculo').files[0];
+                if (!nome || !email || !curriculo) {
+                    e.preventDefault();
+                    alert('Por favor, preencha nome, e-mail e anexe o currículo.');
+                } else {
+                    setTimeout(() => fecharModalCandidatura(), 500);
+                }
+            });
+
+            // ========== NAVEGAÇÃO ==========
+            const linksMenu = document.querySelectorAll('.nav-menu a[href^="#"]');
+            const secaoIds = ['vagas', 'empresas', 'treinamentos'];
+
+            function setActiveLink(id) {
+                linksMenu.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+                });
+            }
+
+            linksMenu.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    document.getElementById('navMenu').classList.remove('open');
+                    const id = this.getAttribute('href').replace('#', '');
+                    setActiveLink(id);
+                });
+            });
+
+            window.addEventListener('scroll', function() {
+                let current = '';
+                secaoIds.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        const top = el.offsetTop - 100;
+                        if (window.scrollY >= top) {
+                            current = id;
+                        }
+                    }
+                });
+                if (current) setActiveLink(current);
+            });
+
+            // ========== MENU MOBILE ==========
+            document.getElementById('menuToggle').addEventListener('click', function() {
+                const menu = document.getElementById('navMenu');
+                menu.classList.toggle('open');
+                const adminLi = document.getElementById('adminMobileLi');
+                if (menu.classList.contains('open')) {
+                    adminLi.style.display = 'block';
+                } else {
+                    adminLi.style.display = 'none';
+                }
+            });
+
+            // ========== SCROLL REVEAL ==========
+            function observeScroll() {
+                const elements = document.querySelectorAll('.animate-on-scroll');
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, { threshold: 0.15, rootMargin: '0px 0px -30px 0px' });
+
+                elements.forEach(el => observer.observe(el));
+            }
+
+            // ========== INICIALIZAÇÃO ==========
+            renderizarVagas();
+            observeScroll();
+            setActiveLink('vagas');
+
+        })();
+    </script>
+
+</body>
+</html>
